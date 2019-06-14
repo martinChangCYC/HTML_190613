@@ -18,6 +18,24 @@
         // function可以有多個參數傳入，也可以有回傳值
         // 10杯以上打95折
         // 20杯以上打9折
+
+        const amt = (num, price) => {
+            let cut = 1;
+            if ( num >= 10 && num < 20) {
+                cut = 0.95;
+            } else if (num >= 20) {
+                cut = 0.9;
+            }
+
+            return price * cut;
+        };
+
+        console.log(amt(5, 100));
+        console.log(amt(10, 100));
+        console.log(amt(15, 100));
+        console.log(amt(20, 100));
+        console.log(amt(25, 100));
+        
         
     </script>
 </body></html>

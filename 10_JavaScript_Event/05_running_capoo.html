@@ -5,19 +5,49 @@
     <title>capoo</title>
 
     <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
         #cat {
             /* 在這個範例中，只要position不是static或者fixed都可以 */
             position: absolute;
+            transition-duration: 0.15s;
+        }
+
+        #cat[data-face="top"] {
+            transform: scaley(1);
+        }
+
+        #cat[data-face="right"] {
+            transform: scaleX(-1);
+        }
+
+        #cat[data-face="down"] {
+            transform: scaley(-1);
+        }
+
+        #cat[data-face="left"] {
+            transform: scaleX(1);
+        }
+
+        .doge {
+            position: absolute;
+            z-index: 9;
         }
     </style>
 
 </head>
 
 <!-- 1. 幫body掛一個 onkeydown 事件 -->
+
 <body>
 
     <img id="cat" src="img/capoo.gif">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script>
         // 2. 取得 #cat 這個元素
 
@@ -26,6 +56,69 @@
         // 3-2. 取得網頁中css樣式的方法：window.getComputedStyle(想要取得的元素);
         // 3-3. 透過3-2拿到的style物件，找尋指定的css樣式屬性：style.getPropertyValue(指定的樣式屬性);
         // 3-4. 配合user的操作，設定 #cat 移動的方向 => 注意單位陷阱
+
+        $('body').keydown((event) => {
+            const key = event.keyCode;
+            const offset = $('#cat').offset();
+            const move = 80;
+            let thisMove = 0;
+
+            switch (key) {
+                case 37:  // left
+                    thisMove = offset.left - move;
+                    if (thisMove < 0) {
+                        thisMove = 0;
+                        // 產生 Doge
+                        createDoge(thisMove, offset.top);
+                    }
+                    $('#cat').css('left', thisMove).attr('data-face', 'left');
+                    break;
+                case 38:// top
+                    thisMove = offset.top - move;
+                    if (thisMove < 0) {
+                        thisMove = 0;
+                        // 產生 Doge
+                        createDoge(offset.left, thisMove);
+                    }
+                    $('#cat').css('top', thisMove).attr('data-face', 'top');
+                    break;
+                case 39: // right
+                    thisMove = offset.left + move;
+                    const maxRight = $('body').width() - $('#cat').width();
+                    if (thisMove > maxRight) {
+                        thisMove = maxRight;
+                        // 產生 Doge
+                        createDoge(thisMove, offset.top);
+                    }
+                    $('#cat').css('left', thisMove).attr('data-face', 'right');
+                    break;
+                case 40: // down
+                    thisMove = offset.top + move;
+                    const maxDown = $('body').height() - $('#cat').height();
+                    if (thisMove > maxDown) {
+                        thisMove = maxDown;
+                        // 產生 Doge
+                        createDoge(offset.left, thisMove);
+                    }
+                    $('#cat').css('top', thisMove).attr('data-face', 'down');
+                    break;
+                default: break;
+            }
+        });
+
+        // 撞牆時產生 Doge
+        const createDoge = (left, top) => {
+            $('body').append('<img class="doge" src="img/doge.GIF">').children().last().each(function() {
+                $(this).css({
+                    'left': left + Math.random() * 100,
+                    'top': top + Math.random() * 100
+                })
+                var el = this;
+                setTimeout(function() {
+                    $(el).remove();
+                }, 1000);
+            });
+        };
 
     </script>
 </body>

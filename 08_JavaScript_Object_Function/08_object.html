@@ -14,6 +14,17 @@
     <script>
         // 使用{} create object
         // 一個物件是一些屬性的集合，而屬性是鍵與值之間的關聯。
+
+        var obj = {
+            hp: 100,
+            mp: 50,
+            atk: 15,
+            def: 10
+        };
+
+        console.log(obj.hp);
+        console.log(obj['hp']);
+        console.log(obj[0]);
         
         // 透過屬性取得物件裡面的值
         
@@ -22,6 +33,7 @@
         // 使用function create object
         // a. 建議第一個字母為大寫
         // b. function裡面的this，是一個關鍵字，在物件被誕生時會伴隨著誕生
+        
         
         // 新增一個person物件，傳入姓名和出生年份
 
